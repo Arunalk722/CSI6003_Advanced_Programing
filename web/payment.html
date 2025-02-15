@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Payment</title>
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Make a Payment</h2>
+        <form action="PaymentController" method="POST" onsubmit="return validateForm()">
+            <label for="bookingId">Booking ID:</label>
+            <input type="number" id="bookingId" name="bookingId" required>
+
+            <label for="customerPhone">Phone Number:</label>
+            <input type="text" id="customerPhone" name="customerPhone" required>
+
+            <label for="amount">Amount:</label>
+            <input type="text" id="amount" name="amount" required readonly>
+
+            <label for="paymentMethod">Payment Method:</label>
+            <select id="paymentMethod" name="paymentMethod">
+                <option value="Credit Card">Credit Card</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Cash">Cash</option>
+            </select>
+
+            <button type="submit">Pay Now</button>
+        </form>
+        <p id="errorMessage" class="error-message"></p>
+    </div>
+
+    <script src="assets/script.js"></script>
+</body>
+</html>
