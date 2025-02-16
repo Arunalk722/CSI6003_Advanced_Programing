@@ -4,11 +4,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/taxi_booking";
+    private static final String URL = "jdbc:mysql://localhost:3306/car_booking_system";
     private static final String USER = "root";
     private static final String PASSWORD = "123Aruna@";
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");  // ✅ Load MySQL Driver
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL JDBC Driver not found", e);
+        }
     }
 }
