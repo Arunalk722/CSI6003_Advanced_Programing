@@ -17,11 +17,13 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '23.0.2'
+        distribution: 'adoptopenjdk'  # or 'zulu' if you prefer a different distribution
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 'latest'
+        distribution: 'apt'  # For Ubuntu-based systems
     
     - name: Run tests (if necessary)
       run: mvn test  # Or your preferred testing command (e.g., gradle test)
