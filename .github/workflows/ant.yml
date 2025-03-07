@@ -22,7 +22,7 @@ jobs:
         CONTROLLER_DIR="src/java/controller"
         
         # Check for BookingController.java
-        if [ -f "$CONTROLLER_DIR/BookingController2.java" ]; then
+        if [ -f "$CONTROLLER_DIR/BookingController.java" ]; then
           echo "BookingController.java exists."
         else
           echo "BookingController.java is missing!"
