@@ -1,4 +1,4 @@
-name: Check Build Components for Mega City Cab Service
+name: Check Controller Availability for Mega City Cab Service
 
 on:
   push:
@@ -31,14 +31,23 @@ jobs:
           # Check if Ant is installed and display the version
           ant -version
           
-          # Check if NetBeans related components are available
-          if [ -f "/path/to/netbeans/installation" ]; then
-            echo "NetBeans is installed."
-          else
-            echo "NetBeans is not installed."
-          fi
+          # Check if the required controller classes are available
+          CONTROLLER_DIR="/workspace/src/java/controller"
           
-          # Check if the build.xml file exists
+          # Define the required controllers
+          REQUIRED_CONTROLLERS=("BookingController.java" "CancelBookingController.java" "LoginController.java")
+          
+          # Check each required controller
+          for controller in "${REQUIRED_CONTROLLERS[@]}"; do
+            if [ -f "$CONTROLLER_DIR/$controller" ]; then
+              echo "$controller is present."
+            else
+              echo "$controller is missing!"
+              exit 1
+            fi
+          done
+
+          # Check if build.xml exists
           if [ -f "build.xml" ]; then
             echo "build.xml found."
           else
@@ -46,16 +55,14 @@ jobs:
             exit 1
           fi
           
-          # Check if necessary server path exists (optional, based on your needs)
-          if [ -d "/path/to/javaee/server" ]; then
-            echo "Java EE server found."
+          # Optionally, check other project components
+          # For example, you can check if the web assets are in place
+          if [ -d "/workspace/web/assets" ]; then
+            echo "Web assets found."
           else
-            echo "Java EE server not found."
+            echo "Web assets not found."
             exit 1
           fi
-          
-          # Display the contents of the build file (optional for inspection)
-          cat build.xml
-          
+
           # Finally, show the contents of the workspace to ensure everything is in place
           ls -alh /workspace
