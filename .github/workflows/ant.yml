@@ -26,7 +26,7 @@ jobs:
       run: sudo apt-get install ant
 
     - name: Build Project with Ant
-      run: ant -f build.xml
+      run: ant -f build.xml -Dj2ee.server.home=/
 
     - name: Run Tests
       run: ant -f build.xml test
