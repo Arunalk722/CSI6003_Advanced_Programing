@@ -19,7 +19,7 @@ jobs:
     - name: Check if Required Controller Classes Exist
       run: |
         # Define the directory where controllers are located
-        CONTROLLER_DIR="./src/java/controller"
+        CONTROLLER_DIR="/home/runner/work/CSI6003_Advanced_Programing/CSI6003_Advanced_Programing/src/java/controller"
         
         # Define the required controllers
         REQUIRED_CONTROLLERS=("BookingController.java" "CancelBookingController.java" "LoginController.java")
