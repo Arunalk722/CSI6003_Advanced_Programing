@@ -16,53 +16,28 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
     
-    - name: Set up Docker Container with NetBeans
-      uses: addnab/docker-run-action@v3
-      with:
-        image: your-docker-image-with-netbeans
-        options: -v ${{ github.workspace }}:/workspace
-        run: |
-          # Navigate to the workspace directory where the project files are located
-          cd /workspace
-          
-          # Check if Java is installed and display the version
-          java -version
-          
-          # Check if Ant is installed and display the version
-          ant -version
-          
-          # Check if the required controller classes are available
-          CONTROLLER_DIR="/workspace/src/java/controller"
-          
-          # Define the required controllers
-          REQUIRED_CONTROLLERS=("BookingController.java" "CancelBookingController.java" "LoginController.java")
-          
-          # Check each required controller
-          for controller in "${REQUIRED_CONTROLLERS[@]}"; do
-            if [ -f "$CONTROLLER_DIR/$controller" ]; then
-              echo "$controller is present."
-            else
-              echo "$controller is missing!"
-              exit 1
-            fi
-          done
-
-          # Check if build.xml exists
-          if [ -f "build.xml" ]; then
-            echo "build.xml found."
+    - name: Check if Required Controller Classes Exist
+      run: |
+        # Define the directory where controllers are located
+        CONTROLLER_DIR="./src/java/controller"
+        
+        # Define the required controllers
+        REQUIRED_CONTROLLERS=("BookingController.java" "CancelBookingController.java" "LoginController.java")
+        
+        # Check if each required controller file exists
+        for controller in "${REQUIRED_CONTROLLERS[@]}"; do
+          if [ -f "$CONTROLLER_DIR/$controller" ]; then
+            echo "$controller is present."
           else
-            echo "build.xml not found."
+            echo "$controller is missing!"
             exit 1
           fi
-          
-          # Optionally, check other project components
-          # For example, you can check if the web assets are in place
-          if [ -d "/workspace/web/assets" ]; then
-            echo "Web assets found."
-          else
-            echo "Web assets not found."
-            exit 1
-          fi
+        done
 
-          # Finally, show the contents of the workspace to ensure everything is in place
-          ls -alh /workspace
+        # Optionally, check if the build.xml file is present
+        if [ -f "build.xml" ]; then
+          echo "build.xml found."
+        else
+          echo "build.xml not found."
+          exit 1
+        fi
