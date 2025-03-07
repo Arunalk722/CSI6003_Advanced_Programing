@@ -16,25 +16,12 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up JDK 11 (Adoptium/Temurin)
-      uses: actions/setup-java@v2
+    - name: Set up Docker Container with NetBeans
+      uses: addnab/docker-run-action@v3
       with:
-        java-version: '11'
-        distribution: 'temurin'
+        image: your-docker-image-with-netbeans
+        options: -v ${{ github.workspace }}:/workspace
+        run: |
+          cd /workspace
+          ant -f build.xml -Dj2ee.server.home=/
 
-    - name: Install Apache Ant
-      run: sudo apt-get install ant
-
-    - name: Download NetBeans Libraries
-      run: |
-        mkdir -p $HOME/netbeans/ant/extra
-        wget https://netbeans.apache.org/download/nb-13.0/nb-13.0-linux-x64.sh -O netbeans-installer.sh
-        chmod +x netbeans-installer.sh
-        ./netbeans-installer.sh --userdir $HOME/netbeans
-        export NETBEANS_EXTRA_LIBS=$HOME/netbeans/java/ant/extra
-
-    - name: Build Project with Ant
-      run: ant -f build.xml -Dj2ee.server.home=/ -Dlibs.CopyLibs.classpath=$NETBEANS_EXTRA_LIBS/org-netbeans-modules-java-j2seproject-copylibstask.jar
-
-    - name: Run Tests
-      run: ant -f build.xml test
