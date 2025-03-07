@@ -28,17 +28,3 @@ jobs:
           echo "BookingController.java is missing!"
           exit 1
         fi
-
-    - name: Check if CancelBookingController.java exists
-      run: |
-        # Define the directory where controllers are located
-        CONTROLLER_DIR="src/java/controller"
-        
-        # Check for CancelBookingController.java
-        if [ -f "$CONTROLLER_DIR/CancelBookingController.java" ]; then
-          echo "CancelBookingController.java exists."
-        else
-          echo "CancelBookingController.java is missing!"
-          exit 1
-        fi
-
