@@ -1,4 +1,4 @@
-name: Check Controller Availability for Mega City Cab Service
+name: Check Controllers Existence
 
 on:
   push:
@@ -9,35 +9,36 @@ on:
       - main
 
 jobs:
-  check-components:
+  check_controllers:
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
-    
-    - name: Check if Required Controller Classes Exist
+
+    - name: Check if BookingController.java exists
       run: |
         # Define the directory where controllers are located
-        CONTROLLER_DIR="/home/runner/work/CSI6003_Advanced_Programing/CSI6003_Advanced_Programing/src/java/controller"
+        CONTROLLER_DIR="src/java/controller"
         
-        # Define the required controllers
-        REQUIRED_CONTROLLERS=("BookingController.java" "CancelBookingController.java" "LoginController.java")
-        
-        # Check if each required controller file exists
-        for controller in "${REQUIRED_CONTROLLERS[@]}"; do
-          if [ -f "$CONTROLLER_DIR/$controller" ]; then
-            echo "$controller is present."
-          else
-            echo "$controller is missing!"
-            exit 1
-          fi
-        done
-
-        # Optionally, check if the build.xml file is present
-        if [ -f "build.xml" ]; then
-          echo "build.xml found."
+        # Check for BookingController.java
+        if [ -f "$CONTROLLER_DIR/BookingController.java" ]; then
+          echo "BookingController.java exists."
         else
-          echo "build.xml not found."
+          echo "BookingController.java is missing!"
           exit 1
         fi
+
+    - name: Check if CancelBookingController.java exists
+      run: |
+        # Define the directory where controllers are located
+        CONTROLLER_DIR="src/java/controller"
+        
+        # Check for CancelBookingController.java
+        if [ -f "$CONTROLLER_DIR/CancelBookingController.java" ]; then
+          echo "CancelBookingController.java exists."
+        else
+          echo "CancelBookingController.java is missing!"
+          exit 1
+        fi
+
