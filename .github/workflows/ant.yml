@@ -1,4 +1,4 @@
-name: Check Controllers Existence
+name: Check Controllers, DAO, and Models Existence
 
 on:
   push:
@@ -9,22 +9,67 @@ on:
       - main
 
 jobs:
-  check_controllers:
+  check_files:
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Check if BookingController.java exists
+    - name: Check if required files exist
       run: |
-        # Define the directory where controllers are located
+        # Define directories
         CONTROLLER_DIR="src/java/controller"
-        
-        # Check for BookingController.java
-        if [ -f "$CONTROLLER_DIR/BookingController.java" ]; then
-          echo "BookingController.java exists."
-        else
-          echo "BookingController.java is missing!"
-          exit 1
-        fi
+        DAO_DIR="src/java/dao"
+        MODEL_DIR="src/java/model"
+
+        # Define required files
+        CONTROLLER_FILES=(
+          "BookingController.java"
+          "CancelBookingController.java"
+          "GetBookingAmountController.java"
+          "LoginController.java"
+          "PaymentController.java"
+          "VerifyPaymentController.java"
+          "ViewBookingsController.java"
+        )
+
+        DAO_FILES=(
+          "BookingDAO.java"
+          "DatabaseConnection.java"
+          "DiscountDAO.java"
+          "PaymentDAO.java"
+          "UserDAO.java"
+        )
+
+        MODEL_FILES=(
+          "Booking.java"
+          "DiscountManager.java"
+          "DiscountStrategy.java"
+          "NotificationService.java"
+          "Payment.java"
+          "PaymentStrategy.java"
+          "PercentageDiscount.java"
+          "SystemManager.java"
+          "User.java"
+        )
+
+        # Function to check files in a given directory
+        check_files() {
+          local DIR=$1
+          shift
+          local FILES=("$@")
+          for FILE in "${FILES[@]}"; do
+            if [ -f "$DIR/$FILE" ]; then
+              echo "$FILE exists."
+            else
+              echo "Error: $FILE is missing in $DIR!"
+              exit 1
+            fi
+          done
+        }
+
+        # Check files in each directory
+        check_files "$CONTROLLER_DIR" "${CONTROLLER_FILES[@]}"
+        check_files "$DAO_DIR" "${DAO_FILES[@]}"
+        check_files "$MODEL_DIR" "${MODEL_FILES[@]}"
